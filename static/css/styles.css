@@ -34,9 +34,33 @@ body {
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.7;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
 h1, h2 { font-family: var(--font-heading); margin: 0; }
+
+a:focus-visible,
+button:focus-visible,
+.input:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Scroll-reveal: sections fade/slide in once as they enter the viewport
+   (toggled by static/js/main.js). Reduced-motion users get an instant
+   reveal via the global transition override above. */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
 
 p { margin: 0; }
 
@@ -147,6 +171,14 @@ a { color: inherit; }
   letter-spacing: 0.04em;
   text-transform: uppercase;
   padding: 12px;
+  transition: transform 0.4s ease;
+}
+
+/* Subtle zoom on photo plates that behave like static content images.
+   Excludes hero-bg (full-bleed, not a discrete "card") and carousel
+   cards (already have their own hover scale driven by carousel.js). */
+.plate:not(.hero-bg):not(.carousel-card):hover .photo-slot {
+  transform: scale(1.06);
 }
 
 /* ===== Buttons ===== */
@@ -165,8 +197,12 @@ a { color: inherit; }
   color: var(--color-text);
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
+    transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(45, 43, 43, 0.18); }
+.btn:active { transform: translateY(0); box-shadow: none; }
 
 .btn-outline-dark:hover {
   border-color: var(--color-accent);
@@ -264,6 +300,7 @@ a { color: inherit; }
 }
 
 .nav a {
+  position: relative;
   color: #fff;
   text-decoration: none;
   font-size: 12px;
@@ -274,6 +311,21 @@ a { color: inherit; }
 }
 
 .nav a:hover { opacity: 1; color: var(--color-accent-300); }
+
+.nav a:not(.nav-contact)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.nav a:not(.nav-contact):hover::after { transform: scaleX(1); }
 
 .nav-contact {
   border: 1px solid rgba(255, 255, 255, 0.85);
@@ -419,26 +471,30 @@ a { color: inherit; }
 /* ===== Gallery carousel ===== */
 .carousel-stage {
   position: relative;
-  height: 520px;
+  height: clamp(260px, 40vw, 520px);
   width: 100%;
   max-width: var(--content-max);
   margin: 0 auto;
   perspective: 1600px;
   touch-action: pan-y;
+  /* --card-w / --card-h are set responsively by carousel.js */
+  --card-w: 160px;
+  --card-h: 210px;
 }
 
 .carousel-card {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 160px;
-  height: 210px;
-  margin: -105px 0 0 -80px;
+  width: var(--card-w);
+  height: var(--card-h);
+  margin: calc(var(--card-h) / -2) 0 0 calc(var(--card-w) / -2);
   will-change: transform, opacity;
   transition: box-shadow 0.2s ease;
 }
 
 .carousel-card .photo-slot { font-size: 9px; padding: 6px; }
+.carousel-card .photo-slot svg { width: 20px; height: 20px; }
 
 .carousel-card.is-hovered { box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45); }
 
@@ -467,10 +523,14 @@ a { color: inherit; }
   border: 1px solid var(--color-divider);
   border-radius: var(--radius-md);
   padding: 24px;
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
 }
 
-.card:hover { box-shadow: var(--shadow-card); }
+.card:hover {
+  box-shadow: var(--shadow-card);
+  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-divider));
+  transform: translateY(-3px);
+}
 
 .card-title {
   font-family: var(--font-heading);

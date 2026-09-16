@@ -15,14 +15,20 @@
   const AUTOPLAY_SPEED = 0.06; // degrees per frame
   const DRAG_SENSITIVITY = 0.3;
   const OVAL_DEPTH_RATIO = 0.42; // radiusZ = radiusX * this
+  const LIFT_RATIO = 0.21; // max upward shift for back cards, as a fraction of stage height
   const MIN_SCALE = 0.68;
   const MAX_SCALE = 1.0;
   const MIN_OPACITY = 0.45;
   const MAX_OPACITY = 1.0;
-  const MAX_LIFT = 110; // px a back-row card shifts upward vs. the front row
 
-  let stageWidth = stage.getBoundingClientRect().width;
-  let radiusX = stageWidth * 0.32;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let stageWidth = 0;
+  let stageHeight = 0;
+  let radiusX = 0;
+  let maxLift = 0;
+  let cardWidth = 160;
+  let cardHeight = 210;
 
   let rotation = 0;
   let targetRotation = null; // used to ease prev/next steps
@@ -31,11 +37,30 @@
   let startRotation = 0;
   let hoveredIndex = null;
 
-  function recalcRadius() {
-    stageWidth = stage.getBoundingClientRect().width;
+  function recalcGeometry() {
+    const rect = stage.getBoundingClientRect();
+    stageWidth = rect.width;
+    stageHeight = rect.height;
     radiusX = stageWidth * 0.32;
+    maxLift = stageHeight * LIFT_RATIO;
+
+    // Card size scales with the stage so cards never spill past the
+    // viewport on narrow screens, but stays capped at its original size.
+    cardWidth = Math.max(80, Math.min(160, stageWidth * 0.135));
+    cardHeight = cardWidth * 1.3125;
+    stage.style.setProperty("--card-w", `${cardWidth.toFixed(1)}px`);
+    stage.style.setProperty("--card-h", `${cardHeight.toFixed(1)}px`);
   }
-  window.addEventListener("resize", recalcRadius);
+  recalcGeometry();
+
+  let resizeRaf = null;
+  window.addEventListener("resize", () => {
+    if (resizeRaf) return;
+    resizeRaf = requestAnimationFrame(() => {
+      recalcGeometry();
+      resizeRaf = null;
+    });
+  });
 
   function render() {
     const radiusZ = radiusX * OVAL_DEPTH_RATIO;
@@ -50,7 +75,7 @@
 
       let scale = MIN_SCALE + depth * (MAX_SCALE - MIN_SCALE);
       let opacity = MIN_OPACITY + depth * (MAX_OPACITY - MIN_OPACITY);
-      const lift = -MAX_LIFT * (1 - depth);
+      const lift = -maxLift * (1 - depth);
       let zIndex = Math.round(depth * 1000);
 
       const isHovered = i === hoveredIndex;
@@ -78,7 +103,7 @@
       } else {
         rotation += diff * 0.18;
       }
-    } else if (!dragging && hoveredIndex === null) {
+    } else if (!dragging && hoveredIndex === null && !reduceMotion) {
       rotation += AUTOPLAY_SPEED;
     }
     render();
