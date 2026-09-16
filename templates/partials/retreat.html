@@ -1,0 +1,25 @@
+{% from "partials/photo.html" import photo_plate %}
+{% from "partials/icons.html" import kicker_icon %}
+<section class="section section-dark" id="retreat">
+  <div class="retreat-header">
+    <div>
+      <div class="kicker kicker-dark">{{ kicker_icon(color="var(--color-accent-300)") }}<span>{{ content.retreat.kicker }}</span></div>
+      <h2 class="section-heading">{{ content.retreat.heading }}</h2>
+    </div>
+    <p class="retreat-paragraph">{{ content.retreat.paragraph }}</p>
+  </div>
+
+  <div class="retreat-mosaic">
+    <div class="retreat-mosaic-col">
+      {{ photo_plate(content.retreat.mosaic_photo_label ~ " 1", class="retreat-mosaic-photo") }}
+      {{ photo_plate(content.retreat.mosaic_photo_label ~ " 2", class="retreat-mosaic-photo") }}
+      {{ photo_plate(content.retreat.mosaic_photo_label ~ " 3", class="retreat-mosaic-photo") }}
+    </div>
+    <div class="retreat-mosaic-col">
+      {{ photo_plate(content.retreat.mosaic_photo_label ~ " 4", class="retreat-mosaic-photo") }}
+      {{ photo_plate(content.retreat.mosaic_photo_label ~ " 5", class="retreat-mosaic-photo") }}
+      {{ photo_plate(content.retreat.mosaic_photo_label ~ " 6", class="retreat-mosaic-photo") }}
+    </div>
+    {{ photo_plate(content.retreat.feature_photo_label, class="retreat-mosaic-feature") }}
+  </div>
+</section>

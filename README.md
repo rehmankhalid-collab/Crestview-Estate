@@ -1,0 +1,78 @@
+# Crestview Estates
+
+A one-page marketing / lead-gen landing site for "Crestview Estates," a
+residential property in Los Angeles. Built with FastAPI, server-rendered
+Jinja2 templates, and SQLite — no separate JS framework.
+
+Recreated from the design handoff in
+`design_handoff_crestview_estates/` (see that folder's `README.md` for the
+full section-by-section spec this implementation follows).
+
+## Stack
+
+- **Backend:** FastAPI
+- **Templates:** Jinja2 (server-rendered, no client framework)
+- **Database:** SQLite via SQLAlchemy (swap `DATABASE_URL` for Postgres later)
+- **Frontend interactivity:** plain CSS transforms + vanilla JS (3D carousel,
+  sticky CTA, lead form submission)
+
+## Setup
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env   # fill in real SMTP creds before launch
+uvicorn app.main:app --reload
+```
+
+Visit http://127.0.0.1:8000/.
+
+The SQLite database file and its `leads` table are created automatically on
+startup (`app/database.py` + `app/models.py`).
+
+## Project layout
+
+```
+app/
+  main.py         FastAPI app, page route, POST /api/leads
+  config.py       Settings loaded from .env (DB URL, SMTP)
+  database.py     SQLAlchemy engine/session
+  models.py       Lead ORM model
+  schemas.py      Lead request validation
+  content.py      Loads data/content.json
+  email_utils.py  Lead notification email (SMTP)
+data/
+  content.json    All page copy: stats, amenities, floor plans, gallery
+                   photo slots, testimonial, location info. Edit this file
+                   (or later move it into DB tables / a real CMS) instead
+                   of hardcoding copy in templates.
+templates/
+  base.html, index.html, partials/*.html
+static/
+  css/styles.css  Design tokens + section layout
+  js/carousel.js  3D circular gallery carousel
+  js/main.js      Sticky CTA + lead form submission
+```
+
+## What's still a placeholder
+
+- **Photos.** Every image slot renders a labeled placeholder plate (see
+  `templates/partials/photo.html`) with a `TODO: replace with real, licensed
+  property photography` comment above it in the rendered HTML. Swap in real
+  photography before launch — search the templates for `photo_plate(` to
+  find every slot.
+- **SMTP.** `app/email_utils.py` sends a lead notification email on each
+  `/api/leads` submission, but does nothing (just logs) until `SMTP_HOST` is
+  set in `.env`. Leads are always saved to the database regardless of email
+  delivery.
+- **Testimonial.** Single hardcoded quote in `data/content.json` — same as
+  the design mock.
+
+## Lead form
+
+`POST /api/leads` accepts `{ "name": string, "phone": string }` as JSON,
+validates both fields (see `app/schemas.py`), saves the lead to the `leads`
+table, and fires the email notification in a background task. The frontend
+(`static/js/main.js`) submits via `fetch` and swaps the form for a
+thank-you card on success, matching the design mock's behavior.

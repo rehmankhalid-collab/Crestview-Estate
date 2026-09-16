@@ -1,0 +1,43 @@
+{% from "partials/photo.html" import photo_plate %}
+{% from "partials/icons.html" import chevrons_right %}
+<section class="hero" id="home">
+  <div class="hero-inner">
+    {{ photo_plate(content.hero.bg_photo_label, class="hero-bg") }}
+    <div class="hero-scrim"></div>
+
+    <div class="hero-content">
+      <nav class="nav hero-fade" style="animation-delay:0s">
+        <span class="nav-brand">{{ content.site.name }}</span>
+        {% for link in content.nav_links %}
+        <a href="{{ link.href }}">{{ link.label }}</a>
+        {% endfor %}
+        <a href="#location" class="nav-contact">Contact</a>
+      </nav>
+
+      <div class="hero-mid">
+        <div class="hero-stats hero-fade" style="animation-delay:.25s">
+          {% for stat in content.stats %}
+          <div class="hero-stat">
+            <p class="hero-stat-value">{{ stat.value }}</p>
+            <p class="hero-stat-label">{{ stat.label | replace(" ", "<br>") | safe }}</p>
+          </div>
+          {% endfor %}
+        </div>
+        <h1 class="hero-wordmark hero-fade" style="animation-delay:.4s">{{ content.hero.wordmark }}</h1>
+      </div>
+
+      <div class="hero-bottom">
+        <div class="hero-bottom-left">
+          <h2 class="hero-tagline hero-fade" style="animation-delay:.6s">{{ content.hero.tagline | safe }}</h2>
+          <div class="hero-fade" style="animation-delay:.8s">
+            <a href="{{ content.hero.cta_href }}" class="btn btn-outline-light">
+              {{ content.hero.cta_label }}
+              {{ chevrons_right() }}
+            </a>
+          </div>
+        </div>
+        <p class="hero-caption hero-fade" style="animation-delay:.9s">{{ content.hero.caption }}</p>
+      </div>
+    </div>
+  </div>
+</section>

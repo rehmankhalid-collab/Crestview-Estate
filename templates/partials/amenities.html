@@ -1,0 +1,15 @@
+{% from "partials/icons.html" import kicker_icon, amenity_icon %}
+<section class="section" id="amenities">
+  <div class="kicker">{{ kicker_icon() }}<span>{{ content.amenities.kicker }}</span></div>
+  <h2 class="section-heading">{{ content.amenities.heading }}</h2>
+
+  <div class="card-grid card-grid-4">
+    {% for item in content.amenities.list %}
+    <div class="card">
+      {{ amenity_icon(item.icon) }}
+      <span class="card-title">{{ item.title }}</span>
+      <p class="card-body">{{ item.description }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>

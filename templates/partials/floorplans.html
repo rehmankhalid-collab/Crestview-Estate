@@ -1,0 +1,18 @@
+{% from "partials/icons.html" import kicker_icon %}
+<section class="section" id="floorplans">
+  <div class="kicker">{{ kicker_icon() }}<span>{{ content.floor_plans.kicker }}</span></div>
+  <h2 class="section-heading">{{ content.floor_plans.heading }}</h2>
+
+  <div class="card-grid card-grid-4">
+    {% for plan in content.floor_plans.list %}
+    <div class="card">
+      <span class="card-kicker">{{ plan.category }}</span>
+      <span class="card-title">{{ plan.name }}</span>
+      <p class="card-body">{{ plan.specs }}</p>
+      <div class="card-meta">
+        <span class="card-price">From {{ plan.price | usd }}</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>

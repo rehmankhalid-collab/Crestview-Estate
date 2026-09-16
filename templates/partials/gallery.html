@@ -1,0 +1,17 @@
+{% from "partials/photo.html" import photo_plate %}
+{% from "partials/icons.html" import kicker_icon, chevron_left, chevron_right %}
+<section class="section section-dark" id="gallery">
+  <div class="kicker kicker-dark">{{ kicker_icon(color="var(--color-accent-300)") }}<span>{{ content.gallery.kicker }}</span></div>
+  <h2 class="section-heading">{{ content.gallery.heading }}</h2>
+
+  <div class="carousel-stage" id="carousel-stage">
+    {% for i in range(content.gallery.photo_count) %}
+    {{ photo_plate(content.gallery.photo_label ~ " " ~ (i + 1), class="carousel-card") }}
+    {% endfor %}
+  </div>
+
+  <div class="carousel-controls">
+    <button type="button" class="btn btn-icon btn-outline-light" id="carousel-prev" aria-label="Previous">{{ chevron_left() }}</button>
+    <button type="button" class="btn btn-icon btn-outline-light" id="carousel-next" aria-label="Next">{{ chevron_right() }}</button>
+  </div>
+</section>

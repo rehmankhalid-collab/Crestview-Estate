@@ -1,0 +1,44 @@
+{% from "partials/photo.html" import photo_plate %}
+{% from "partials/icons.html" import kicker_icon, map_pin, phone_icon, mail_icon %}
+<section class="section" id="location">
+  <div class="kicker">{{ kicker_icon() }}<span>{{ content.location.kicker }}</span></div>
+
+  <div class="location-layout">
+    <div class="location-info">
+      <h2 class="section-heading">{{ content.location.heading }}</h2>
+      <p class="body-paragraph">{{ content.location.paragraph }}</p>
+
+      <div class="location-rows">
+        <div class="location-row">{{ map_pin() }}<span>{{ content.location.address }}</span></div>
+        <div class="location-row">{{ phone_icon() }}<span>{{ content.location.phone }}</span></div>
+        <div class="location-row">{{ mail_icon() }}<span>{{ content.location.email }}</span></div>
+      </div>
+
+      <button type="button" class="btn btn-outline-dark">{{ content.location.brochure_label }}</button>
+    </div>
+
+    <div class="location-form-col">
+      {{ photo_plate(content.location.map_photo_label, class="location-map-photo") }}
+
+      <div class="card lead-success" id="lead-success" hidden>
+        <span class="card-title">Thank you &mdash; we'll be in touch shortly.</span>
+        <p class="card-body">A member of our team will call you within one business day.</p>
+      </div>
+
+      <form class="lead-form" id="lead-form">
+        <div class="field">
+          <label for="lead-name">Full name</label>
+          <input id="lead-name" name="name" class="input" type="text" required>
+          <span class="field-error" id="lead-name-error"></span>
+        </div>
+        <div class="field">
+          <label for="lead-phone">Phone</label>
+          <input id="lead-phone" name="phone" class="input" type="tel" required>
+          <span class="field-error" id="lead-phone-error"></span>
+        </div>
+        <span class="field-error" id="lead-form-error"></span>
+        <button type="submit" class="btn btn-primary btn-block">Request a Call</button>
+      </form>
+    </div>
+  </div>
+</section>
