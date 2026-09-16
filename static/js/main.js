@@ -1,4 +1,27 @@
 (function () {
+  // Scroll-reveal: each .reveal section fades/slides in once as it enters
+  // the viewport. Falls back to showing everything immediately if
+  // IntersectionObserver isn't available.
+  const revealEls = document.querySelectorAll(".reveal");
+  if (revealEls.length) {
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        (entries, obs) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              obs.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+      );
+      revealEls.forEach((el) => observer.observe(el));
+    } else {
+      revealEls.forEach((el) => el.classList.add("is-visible"));
+    }
+  }
+
   // Sticky mobile "Book a Call" bar, shown after scrolling past ~70% of viewport height.
   const stickyCta = document.getElementById("sticky-cta");
   if (stickyCta) {
