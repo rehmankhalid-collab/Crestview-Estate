@@ -1,6 +1,5 @@
 /* ===== Design tokens ("Classical" system, per design handoff README) ===== */
 :root {
-  --color-bg: #f3f2f2;
   --color-accent-100: #fff3e4;
   --color-text: #201f1d;
   --color-accent: #b68235;
@@ -465,7 +464,10 @@ a { color: inherit; }
   border: 1px solid var(--color-divider);
   border-radius: var(--radius-md);
   padding: 24px;
+  transition: box-shadow 0.2s ease;
 }
+
+.card:hover { box-shadow: var(--shadow-card); }
 
 .card-title {
   font-family: var(--font-heading);
