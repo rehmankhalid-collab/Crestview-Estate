@@ -1,10 +1,13 @@
+import logging
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import BackgroundTasks, Depends, FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import ValidationError
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session
 
 from app.config import get_settings
@@ -14,16 +17,29 @@ from app.email_utils import send_lead_notification
 from app.models import Lead
 from app.schemas import LeadCreate
 
+# Absolute, not relative: a serverless host (e.g. Vercel) can run this
+# with a working directory that isn't the project root, which would
+# otherwise break StaticFiles/Jinja2Templates lookups.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    Base.metadata.create_all(bind=engine)
+    try:
+        Base.metadata.create_all(bind=engine)
+    except OperationalError:
+        # Read-only filesystem (e.g. DATABASE_URL still pointing at a
+        # non-writable path in production) — log and keep serving pages;
+        # /api/leads will surface the real error on the next write.
+        logging.getLogger("crestview").exception(
+            "Could not create database tables; check DATABASE_URL."
+        )
     yield
 
 
 app = FastAPI(title="Crestview Estates", lifespan=lifespan)
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 templates.env.filters["usd"] = lambda value: f"${value:,.0f}"
 
 

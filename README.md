@@ -31,9 +31,43 @@ Visit http://127.0.0.1:8000/.
 The SQLite database file and its `leads` table are created automatically on
 startup (`app/database.py` + `app/models.py`).
 
+## Deploying to Vercel
+
+`vercel.json` + `api/index.py` re-export the FastAPI app as a Vercel Python
+serverless function, so `vercel deploy` (or a GitHub-connected project)
+should build and serve the site with no further config.
+
+**Read this before you rely on it in production:** a serverless function's
+filesystem is read-only except `/tmp`, and `/tmp` is wiped on every cold
+start and isn't shared across instances. `app/config.py` detects Vercel's
+`VERCEL=1` env var and points SQLite at `/tmp/crestview.db` automatically
+so the app doesn't crash — but that means **leads saved through the
+`/tmp` SQLite file can and will disappear** between deploys, cold starts,
+and scale-out. Two ways to get real persistence:
+
+1. **Set `DATABASE_URL` to a hosted Postgres** in the Vercel project's
+   environment variables (Neon, Supabase, and Vercel Postgres all work —
+   pick one, create a database, copy its connection string). Add
+   `psycopg2-binary` to `requirements.txt` and nothing else needs to
+   change; SQLAlchemy handles the rest.
+2. **Host it somewhere with a persistent disk and a long-running process**
+   instead — Render, Railway, Fly.io, or a small VPS all suit a stateful
+   FastAPI app better than serverless. On any of those, `uvicorn
+   app.main:app` (see Setup above) is the whole deployment.
+
+The same caveat applies to the background lead-notification email
+(`app/email_utils.py`): FastAPI's `BackgroundTasks` runs after the response
+is sent, and a serverless platform can freeze the function's container
+right after that response — so once you fill in real `SMTP_*` credentials,
+test that the email actually lands when deployed on Vercel specifically,
+not just locally.
+
 ## Project layout
 
 ```
+api/
+  index.py        Vercel serverless entrypoint (re-exports app/main.py's app)
+vercel.json       Vercel build/route config
 app/
   main.py         FastAPI app, page route, POST /api/leads
   config.py       Settings loaded from .env (DB URL, SMTP)
