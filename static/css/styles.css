@@ -307,6 +307,7 @@ a { color: inherit; }
   font-size: 30px;
   font-weight: 600;
   font-feature-settings: "tnum" 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55), 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
 .hero-stat-label {
@@ -315,6 +316,7 @@ a { color: inherit; }
   letter-spacing: 0.1em;
   text-transform: uppercase;
   opacity: 0.85;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55), 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
 .hero-wordmark {
@@ -362,6 +364,7 @@ a { color: inherit; }
   text-transform: uppercase;
   opacity: 0.9;
   text-align: right;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55), 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
 /* ===== About ===== */
