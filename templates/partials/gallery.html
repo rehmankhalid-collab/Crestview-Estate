@@ -6,7 +6,8 @@
 
   <div class="carousel-stage" id="carousel-stage">
     {% for i in range(content.gallery.photo_count) %}
-    {{ photo_plate(content.gallery.photo_label ~ " " ~ (i + 1), class="carousel-card") }}
+    {% set srcs = content.gallery.photo_srcs %}
+    {{ photo_plate(content.gallery.photo_label ~ " " ~ (i + 1), class="carousel-card", src=(srcs[i % srcs|length] if srcs else "")) }}
     {% endfor %}
   </div>
 

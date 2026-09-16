@@ -46,7 +46,8 @@
     "cta_label": "Book a Call",
     "cta_href": "#location",
     "caption": "A modern residence inspired by warm stone, quiet luxury, and the lasting beauty of timeless design — reimagined for Los Angeles.",
-    "bg_photo_label": "Hero exterior photo"
+    "bg_photo_label": "Hero exterior photo",
+    "bg_photo_src": "/static/img/design-placeholders/hero-bg.jpg"
   },
   "about": {
     "kicker": "About Crestview",
@@ -71,7 +72,16 @@
     "kicker": "Gallery",
     "heading": "Step Inside",
     "photo_count": 25,
-    "photo_label": "Lifestyle photo"
+    "photo_label": "Lifestyle photo",
+    "photo_srcs": [
+      "/static/img/design-placeholders/gallery-1.jpg",
+      "/static/img/design-placeholders/gallery-2.jpg",
+      "/static/img/design-placeholders/gallery-3.jpg",
+      "/static/img/design-placeholders/gallery-4.jpg",
+      "/static/img/design-placeholders/gallery-5.jpg",
+      "/static/img/design-placeholders/gallery-6.jpg",
+      "/static/img/design-placeholders/gallery-7.jpg"
+    ]
   },
   "amenities": {
     "kicker": "Amenities",

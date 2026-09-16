@@ -91,24 +91,21 @@ static/
 
 ## What's still a placeholder
 
-- **Photos.** `static/img/design-placeholders/` holds 11 photos recovered
-  from the design handoff's own screenshots (cropped out of
-  `02-about.png`, `05-location.png`, `06-retreat.png` — About's 3 photos,
-  Location's site photo, and Retreat's 6-photo mosaic + feature photo) and
-  wired into their matching slots via `data/content.json`'s `*_src` fields,
-  at the client's request, purely so the site doesn't look unfinished
-  during development. **They are still the same unlicensed stock imagery
-  the design handoff's own README says isn't cleared for production** —
-  every slot using one still carries the `TODO: replace with real,
-  licensed property photography` HTML comment (see
-  `templates/partials/photo.html`), now noting it's a temporary stand-in
-  specifically. Two things could *not* be recovered this way and are still
-  gray placeholder plates: the **hero background photo** and all **25
-  gallery carousel photos** — the handoff's screenshots folder never
-  included captures of those two sections, only About/Amenities/Floor
-  Plans/Location/Retreat. Swap every photo (recovered or not) for real,
-  licensed photography before launch — search the templates for
-  `photo_plate(` to find every slot.
+- **Photos.** `static/img/design-placeholders/` holds every photo the
+  design mock used — hero background, About's 3 photos, the Retreat
+  mosaic's 6 tiles + feature photo, and the Location site photo — sourced
+  from the client's own copies of the mock's original asset files (not
+  screenshot crops), wired in via `data/content.json`'s `*_src` fields.
+  The Gallery carousel (`gallery.photo_srcs`) cycles through 7 more
+  photos from that same set across all 25 cards, since only 7 unique
+  ones were available. **All of it is still the same unlicensed stock
+  imagery the design handoff's own README says isn't cleared for
+  production** — every slot using one still carries a `TODO: replace
+  with real, licensed property photography` HTML comment (see
+  `templates/partials/photo.html`). Swap every photo for real, licensed
+  photography before launch — search the templates for `photo_plate(`
+  to find every slot, or `data/content.json` for every `*_src` /
+  `photo_srcs` field.
 - **SMTP.** `app/email_utils.py` sends a lead notification email on each
   `/api/leads` submission, but does nothing (just logs) until `SMTP_HOST` is
   set in `.env`. Leads are always saved to the database regardless of email
