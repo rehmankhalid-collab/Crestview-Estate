@@ -55,12 +55,15 @@
       "Inspired by timeless materials, soft natural light, and the rhythm of private family life, Crestview brings together spacious residences, calm outdoor spaces, and thoughtful details that make daily living feel considered. Every line, texture, and view is designed with purpose, not for excess, but to make home feel lasting, personal, and deeply comfortable."
     ],
     "main_photo_label": "Building photo",
+    "main_photo_src": "/static/img/design-placeholders/about-main.jpg",
     "side_photos": [
       {
-        "label": "Building photo"
+        "label": "Building photo",
+        "src": "/static/img/design-placeholders/about-side-1.jpg"
       },
       {
-        "label": "Interior photo"
+        "label": "Interior photo",
+        "src": "/static/img/design-placeholders/about-side-2.jpg"
       }
     ]
   },
@@ -131,7 +134,16 @@
     "heading": "A Slower Way to Live",
     "paragraph": "Designed as a quiet retreat within the city, Crestview brings together spaces for rest, movement, gathering, and reflection. Warm stone, soft lighting, water, greenery, and open-air moments create an atmosphere where everyday living feels slower, calmer, and more considered.",
     "mosaic_photo_label": "Lifestyle photo",
-    "feature_photo_label": "Feature lifestyle photo"
+    "mosaic_photo_srcs": [
+      "/static/img/design-placeholders/retreat-mosaic-1.jpg",
+      "/static/img/design-placeholders/retreat-mosaic-2.jpg",
+      "/static/img/design-placeholders/retreat-mosaic-3.jpg",
+      "/static/img/design-placeholders/retreat-mosaic-4.jpg",
+      "/static/img/design-placeholders/retreat-mosaic-5.jpg",
+      "/static/img/design-placeholders/retreat-mosaic-6.jpg"
+    ],
+    "feature_photo_label": "Feature lifestyle photo",
+    "feature_photo_src": "/static/img/design-placeholders/retreat-feature.jpg"
   },
   "testimonial": {
     "quote": "Crestview felt less like buying a residence and more like discovering how we actually wanted to live — the light, the quiet, the details we didn't know to ask for.",
@@ -145,7 +157,8 @@
     "phone": "(310) 555-0148",
     "email": "hello@crestviewestates.com",
     "brochure_label": "Download Brochure",
-    "map_photo_label": "Site / map photo"
+    "map_photo_label": "Site / map photo",
+    "map_photo_src": "/static/img/design-placeholders/location-map.jpg"
   },
   "footer_links": [
     {

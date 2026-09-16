@@ -5,7 +5,7 @@
 
   <div class="about-layout">
     <div class="about-media">
-      {{ photo_plate(content.about.main_photo_label, class="about-main-photo") }}
+      {{ photo_plate(content.about.main_photo_label, class="about-main-photo", src=content.about.main_photo_src) }}
       <div class="about-stats">
         {% for stat in content.stats %}
         <div class="about-stat">
@@ -21,7 +21,7 @@
       <p class="body-paragraph">{{ content.about.paragraphs[1] }}</p>
       <div class="about-side-photos">
         {% for photo in content.about.side_photos %}
-        {{ photo_plate(photo.label, class="about-side-photo") }}
+        {{ photo_plate(photo.label, class="about-side-photo", src=photo.src) }}
         {% endfor %}
       </div>
     </div>
