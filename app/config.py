@@ -1,6 +1,7 @@
 import os
 from functools import lru_cache
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Serverless hosts (Vercel sets VERCEL=1) only allow writes under /tmp;
@@ -34,6 +35,19 @@ class Settings(BaseSettings):
     smtp_use_tls: bool = True
     smtp_from_email: str = "noreply@crestviewestates.com"
     lead_notification_email: str = "hello@crestviewestates.com"
+
+    @model_validator(mode="before")
+    @classmethod
+    def _blank_env_vars_mean_unset(cls, data):
+        # A platform's dashboard (e.g. Vercel) lets you add an env var with
+        # an empty value, which isn't the same as not setting it — pydantic
+        # can't parse "" as a bool/int (smtp_port, smtp_use_tls) and would
+        # otherwise crash the whole app at import time over one blank
+        # field. Drop blank entries so they fall through to the field's
+        # real default instead.
+        if isinstance(data, dict):
+            return {k: v for k, v in data.items() if v != ""}
+        return data
 
 
 @lru_cache
